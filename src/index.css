@@ -1,0 +1,104 @@
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;500;600;700&display=swap");
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Noto Sans Thai", sans-serif;
+  --color-campus-primary: #0f766e;
+  --color-campus-primary-hover: #115e59;
+  --color-campus-primary-soft: #ecfdf5;
+  --color-campus-secondary: #f59e0b;
+  --color-campus-success: #15803d;
+  --color-campus-warning: #b45309;
+  --color-campus-danger: #b91c1c;
+  --color-campus-info: #0369a1;
+  --color-campus-background: #f6f8f7;
+  --color-campus-surface: #ffffff;
+  --color-campus-border: #dbe5e1;
+  --color-campus-text: #1f2937;
+  --color-campus-muted: #64748b;
+}
+
+:root {
+  font-family: "Noto Sans Thai", sans-serif;
+  color: #1f2937;
+  background: #f6f8f7;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  background: #f6f8f7;
+}
+
+body {
+  min-height: 100vh;
+  margin: 0;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+button:disabled {
+  cursor: not-allowed;
+}
+
+#root {
+  min-height: 100vh;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes modal-in {
+  from {
+    opacity: 0;
+    transform: scale(0.98) translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+@keyframes toast-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}
