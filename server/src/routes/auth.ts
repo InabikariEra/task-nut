@@ -1,5 +1,6 @@
-import { Router } from "express";
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import bcrypt from "bcryptjs";
+import { Router } from "express";
 import jwt from "jsonwebtoken";
 import { z } from "zod";
 import { pool } from "../config/db.js";

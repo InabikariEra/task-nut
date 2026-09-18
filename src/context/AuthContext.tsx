@@ -1,7 +1,9 @@
 import { useMemo, useState, type ReactNode } from "react";
+import { mockAuthProfiles } from "../data/mockData";
+import { isApiEnabled } from "../services/api";
+import { loginRequest } from "../services/authService";
 import type { AuthUser, UserRole } from "../types";
 import { AuthContext } from "./authContextValue";
-import { mockAuthProfiles } from "../data/mockData";
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<AuthUser | null>(() => {
@@ -18,7 +20,18 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       : saved;
   });
 
-  const signIn = (email: string, role: UserRole, password?: string) => {
+  const signIn = async (email: string, role: UserRole, password?: string) => {
+    if (isApiEnabled()) {
+      try {
+        const result = await loginRequest(email, password ?? "");
+        setUser(result.user);
+        localStorage.setItem("borrowdesk-token", result.token);
+        localStorage.setItem("borrowdesk-user", JSON.stringify(result.user));
+        return true;
+      } catch {
+        return false;
+      }
+    }
     const profile =
       mockAuthProfiles.find(
         (candidate) =>
@@ -57,6 +70,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const signOut = () => {
     setUser(null);
     localStorage.removeItem("borrowdesk-user");
+    localStorage.removeItem("borrowdesk-token");
   };
   const value = useMemo(() => ({ user, signIn, updateUser, signOut }), [user]);
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

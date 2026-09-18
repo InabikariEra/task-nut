@@ -20,7 +20,7 @@ export default function Toast({ message, type = "info", onClose }: ToastProps) {
   }, [onClose]);
   return (
     <div
-      className={`fixed bottom-5 right-5 z-[60] flex max-w-sm items-start gap-3 border px-4 py-3 text-sm shadow-lg animate-[toast-in_200ms_ease-out] ${styles[type]}`}
+      className={`fixed bottom-5 right-5 z-60 flex max-w-sm items-start gap-3 border px-4 py-3 text-sm shadow-lg animate-[toast-in_200ms_ease-out] ${styles[type]}`}
       role="status"
     >
       <span className="mt-0.5 font-bold" aria-hidden="true">

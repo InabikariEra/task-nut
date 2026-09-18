@@ -3,7 +3,8 @@ import jwt from "jsonwebtoken";
 import { env } from "../config/env.js";
 
 export type Role = "ADMIN" | "STAFF" | "USER";
-export interface AuthRequest extends Request {
+export interface AuthRequest extends Request<Record<string, string>> {
+  params: Record<string, string>;
   user?: { id: number; role: Role; email: string };
 }
 

@@ -27,13 +27,13 @@ export default function Login() {
     setSubmitError("");
     if (nextErrors.email || nextErrors.password) return;
     setIsLoading(true);
-    window.setTimeout(() => {
+    window.setTimeout(async () => {
       if (email.trim().toLowerCase() === "error@campus.edu") {
         setSubmitError("ไม่สามารถเข้าสู่ระบบได้ กรุณาตรวจสอบข้อมูลอีกครั้ง");
         setIsLoading(false);
         return;
       }
-      const signedIn = signIn(email.trim(), role, password);
+      const signedIn = await signIn(email.trim(), role, password);
       if (!signedIn) {
         setSubmitError("Email หรือรหัสผ่านไม่ถูกต้อง");
         setIsLoading(false);

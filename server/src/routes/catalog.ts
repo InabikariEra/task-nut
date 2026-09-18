@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Router } from "express";
 import { pool } from "../config/db.js";
 import { requireAuth, type AuthRequest } from "../middleware/auth.js";

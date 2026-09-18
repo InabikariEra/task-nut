@@ -284,8 +284,16 @@ FROM categories
 WHERE
     name = 'หนังสือเรียน';
 
--- Insert the admin account after generating a bcrypt hash for password 123456.
--- Replace the placeholder hash before running this statement.
--- INSERT INTO users (role_id, name, email, password_hash, department)
--- SELECT id, 'memm', 'suparuek.mem@gmail.com', '<BCRYPT_HASH_FOR_123456>', 'เทคโนโลยีสารสนเทศ'
--- FROM roles WHERE code = 'ADMIN';
+INSERT INTO
+    users (
+        role_id,
+        name,
+        email,
+        password_hash,
+        student_id,
+        department
+    )
+SELECT id, 'memm', 'suparuek.mem@gmail.com', '$2b$12$un3gu5yGVLnNXVv7jLRjCuusVw.u1EuoQpYN6VV0R76ySrXd05POG', 'ST-MEMM-01', 'เทคโนโลยีสารสนเทศ'
+FROM roles
+WHERE
+    code = 'ADMIN';

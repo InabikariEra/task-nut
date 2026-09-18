@@ -1,12 +1,13 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Router } from "express";
 import { z } from "zod";
 import { pool } from "../config/db.js";
-import { audit } from "../utils/audit.js";
 import {
   requireAuth,
   requireRole,
   type AuthRequest,
 } from "../middleware/auth.js";
+import { audit } from "../utils/audit.js";
 
 const router = Router();
 router.use(requireAuth);
@@ -24,7 +25,7 @@ router.get("/", async (request: AuthRequest, response, next) => {
       request.user?.role === "ADMIN" || request.user?.role === "STAFF";
     const [rows] = await pool.execute(
       "SELECT b.*, u.name AS borrower, i.name AS item_name, bi.quantity FROM borrowings b JOIN users u ON u.id=b.user_id JOIN borrowing_items bi ON bi.borrowing_id=b.id JOIN items i ON i.id=bi.item_id WHERE (? = 1 OR b.user_id = ?) ORDER BY b.created_at DESC",
-      [isStaff ? 1 : 0, request.user?.id],
+      [isStaff ? 1 : 0, request.user?.id ?? 0],
     );
     return response.json(rows);
   } catch (error) {
@@ -56,7 +57,7 @@ router.post("/", async (request: AuthRequest, response, next) => {
       "INSERT INTO borrowings (request_code, user_id, borrowed_at, due_at, purpose) VALUES (?, ?, ?, ?, ?)",
       [
         code,
-        request.user?.id,
+        request.user?.id ?? 0,
         input.borrowedDate,
         input.dueDate,
         input.purpose,
@@ -102,7 +103,7 @@ router.patch(
         .parse(request.body.status);
       await pool.execute(
         "UPDATE borrowings SET status=?, approved_by=? WHERE id=?",
-        [status, request.user?.id, request.params.id],
+        [status, request.user?.id ?? 0, String(request.params.id)],
       );
       await audit(
         request.user?.id,
@@ -122,7 +123,7 @@ router.patch("/:id/cancel", async (request: AuthRequest, response, next) => {
   try {
     await pool.execute(
       "UPDATE borrowings SET status='CANCELLED' WHERE id=? AND user_id=? AND status='PENDING'",
-      [request.params.id, request.user?.id],
+      [String(request.params.id), request.user?.id ?? 0],
     );
     await audit(
       request.user?.id,
